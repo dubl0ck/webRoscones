@@ -72,3 +72,19 @@ table th, table td {
 table th {
   background: #f4f4f4;
 }
+
+td:nth-child(4) {
+  font-weight: bold;
+}
+
+td:contains("Pendiente") {
+  color: orange;
+}
+
+td:contains("En preparación") {
+  color: blue;
+}
+
+td:contains("Entregado") {
+  color: green;
+}

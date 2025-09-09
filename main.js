@@ -28,4 +28,3 @@ form.addEventListener("submit", async (e) => {
     window.location.href = "clientes.html";
   }
 });
-

@@ -1,13 +1,13 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
-const supabaseUrl = "https://zxipywyhobtlxaaerazi.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp4aXB5d3lob2J0bHhhYWVyYXppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTczMzE5ODYsImV4cCI6MjA3MjkwNzk4Nn0.YB_mgNKRBrJ8-Z7jnT5_xeQV0zrmAiRqVZ8JqgLxjVs";
+const supabaseUrl = "TU_SUPABASE_URL";
+const supabaseKey = "TU_SUPABASE_ANON_KEY";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function cargarDatos() {
   const { data, error } = await supabase
     .from("cliente")
-    .select("id, nombre, fecha_creacion, contenido_pedido (cantidad, tamaño, relleno)");
+    .select("id, nombre, fecha_creacion, contenido_pedido (cantidad, tamaño, relleno, estado)");
 
   if (error) {
     console.error(error);
@@ -37,6 +37,7 @@ async function cargarDatos() {
             <th>Cantidad</th>
             <th>Tamaño</th>
             <th>Relleno</th>
+            <th>Estado</th>
           </tr>
         </thead>
         <tbody>
@@ -45,6 +46,7 @@ async function cargarDatos() {
               <td>${p.cantidad}</td>
               <td>${p.tamaño}</td>
               <td>${p.relleno}</td>
+              <td>${p.estado}</td>
             </tr>
           `).join("")}
         </tbody>
@@ -59,4 +61,3 @@ async function cargarDatos() {
 }
 
 cargarDatos();
-
