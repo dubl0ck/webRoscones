@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Crear Cliente y Pedidos</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="crear_cliente.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+    <a href="index.html">Login</a>
+    <a href="clientes.html">Lista de Clientes</a>
+    <a href="crear_cliente.html">Nuevo Cliente</a>
+    </nav>
+
+  <div class="form-container">
+    <h2>Nuevo Cliente</h2>
+    <form id="cliente-form">
+      <label>Nombre del cliente:</label>
+      <input type="text" id="nombreCliente" required>
+
+      <h3>Pedidos</h3>
+      <div id="pedidos-container"></div>
+      <button type="button" id="agregarPedido">➕ Añadir pedido</button>
+
+      <br><br>
+      <button type="submit">Guardar Cliente</button>
+    </form>
+
+    <p id="mensaje"></p>
+  </div>
+</body>
+</html>
