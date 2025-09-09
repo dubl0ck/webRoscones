@@ -25,7 +25,6 @@ form.addEventListener("submit", async (e) => {
     mensaje.textContent = "Login exitoso 🎉";
     console.log("Usuario:", data.user);
 
-    // Redirigir a otra página
-    // window.location.href = "dashboard.html";
+    window.location.href = "clientes.html";
   }
 });
