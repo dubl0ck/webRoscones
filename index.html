@@ -23,5 +23,13 @@
     </form>
     <p id="mensaje"></p>
   </div>
+  <script>
+  const links = document.querySelectorAll(".navbar a");
+  links.forEach(link => {
+    if (window.location.pathname.endsWith(link.getAttribute("href"))) {
+      link.classList.add("active");
+    }
+  });
+</script>
 </body>
 </html>
