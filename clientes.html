@@ -15,14 +15,15 @@
 
 
   <h2>Clientes y sus pedidos</h2>
+  <br>
   <div id="listaClientes"></div>
   <script>
-  const links = document.querySelectorAll(".navbar a");
-  links.forEach(link => {
-    if (window.location.pathname.endsWith(link.getAttribute("href"))) {
-      link.classList.add("active");
-    }
-  });
-</script>
+    const links = document.querySelectorAll(".navbar a");
+    links.forEach(link => {
+      if (window.location.pathname.endsWith(link.getAttribute("href"))) {
+        link.classList.add("active");
+      }
+    });
+  </script>
 </body>
 </html>

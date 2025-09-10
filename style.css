@@ -167,15 +167,16 @@ hr {
 /* Ajustar contenido para que no se esconda debajo del menú */
 body {
   padding-top: 60px; /* Altura de la barra */
+  margin-top: 50px; /* Espacio extra para evitar solapamiento */
 }
 
 .estado.pendiente {
-  color: orange;
+  color: red;
   font-weight: bold;
 }
 
 .estado.en-preparación {
-  color: blue;
+  color: orange;
   font-weight: bold;
 }
 
