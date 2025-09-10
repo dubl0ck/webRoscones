@@ -2,11 +2,11 @@ body {
   font-family: Arial, sans-serif;
   background: #f2f2f2;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  flex-direction: column; /* Apila los hijos en columna */
+  min-height: 100vh;
   padding-top: 60px; /* Altura de la barra */
-  margin-top: 50px; /* Espacio extra para evitar solapamiento */
+  margin-top: 0; /* Elimina el margen extra */
+  align-items: stretch; /* Que ocupe todo el ancho */
 }
 
 .login-container {
@@ -185,4 +185,5 @@ body {
   color: green;
   font-weight: bold;
 }
+
 
