@@ -5,7 +5,8 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  margin: 0;
+  padding-top: 60px; /* Altura de la barra */
+  margin-top: 50px; /* Espacio extra para evitar solapamiento */
 }
 
 .login-container {
@@ -184,3 +185,4 @@ body {
   color: green;
   font-weight: bold;
 }
+
