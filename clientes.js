@@ -1,13 +1,13 @@
-import { supabase, checkAuth, logout } from "./utils.js";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
-checkAuth(); // obligar login antes de cargar datos
-
-// Logout
-document.getElementById("logout")?.addEventListener("click", logout);
+const supabaseUrl = "https://zxipywyhobtlxaaerazi.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp4aXB5d3lob2J0bHhhYWVyYXppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTczMzE5ODYsImV4cCI6MjA3MjkwNzk4Nn0.YB_mgNKRBrJ8-Z7jnT5_xeQV0zrmAiRqVZ8JqgLxjVs";
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function cargarDatos() {
   const { data, error } = await supabase
     .from("cliente")
+    .select("id, nombre, fecha_creacion, contenido_pedido (cantidad, tamaño, relleno, estado)");
 
   if (error) {
     console.error(error);
@@ -18,6 +18,7 @@ async function cargarDatos() {
   contenedor.innerHTML = "";
 
   data.forEach(cliente => {
+    // Bloque por cliente
     const divCliente = document.createElement("div");
     divCliente.classList.add("cliente-bloque");
 
@@ -26,8 +27,10 @@ async function cargarDatos() {
       <p><strong>Fecha de creación:</strong> ${new Date(cliente.fecha_creacion).toLocaleDateString()}</p>
     `;
 
+    // Tabla de pedidos
     if (cliente.contenido_pedido.length > 0) {
       const tabla = document.createElement("table");
+      tabla.border = "1";
       tabla.innerHTML = `
         <thead>
           <tr>
@@ -38,17 +41,14 @@ async function cargarDatos() {
           </tr>
         </thead>
         <tbody>
-          ${cliente.contenido_pedido.map(p => {
-            const estadoClass = p.estado.replace(/\s+/g, "-").toLowerCase();
-            return `
-              <tr>
-                <td>${p.cantidad}</td>
-                <td>${p.tamaño}</td>
-                <td>${p.relleno}</td>
-                <td class="estado ${estadoClass}">${p.estado}</td>
-              </tr>
-            `;
-          }).join("")}
+          ${cliente.contenido_pedido.map(p => `
+            <tr>
+              <td>${p.cantidad}</td>
+              <td>${p.tamaño}</td>
+              <td>${p.relleno}</td>
+              <td>${p.estado}</td>
+            </tr>
+          `).join("")}
         </tbody>
       `;
       divCliente.appendChild(tabla);

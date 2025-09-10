@@ -169,18 +169,15 @@ body {
   padding-top: 60px; /* Altura de la barra */
 }
 
-.estado.pendiente {
+
+td:contains("Pendiente") {
   color: orange;
-  font-weight: bold;
 }
 
-.estado.en-preparación {
+td:contains("En preparación") {
   color: blue;
-  font-weight: bold;
 }
 
-.estado.entregado {
+td:contains("Entregado") {
   color: green;
-  font-weight: bold;
 }
-

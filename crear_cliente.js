@@ -1,13 +1,15 @@
-import { supabase, checkAuth, logout } from "./utils.js";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
-checkAuth();
-document.getElementById("logout")?.addEventListener("click", logout);
+const supabaseUrl = "https://zxipywyhobtlxaaerazi.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp4aXB5d3lob2J0bHhhYWVyYXppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTczMzE5ODYsImV4cCI6MjA3MjkwNzk4Nn0.YB_mgNKRBrJ8-Z7jnT5_xeQV0zrmAiRqVZ8JqgLxjVs";
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const form = document.getElementById("cliente-form");
 const pedidosContainer = document.getElementById("pedidos-container");
 const btnAgregarPedido = document.getElementById("agregarPedido");
 const mensaje = document.getElementById("mensaje");
 
+// 👉 Función para añadir un formulario de pedido
 function agregarPedidoForm() {
   const div = document.createElement("div");
   div.classList.add("pedido-form");
@@ -27,17 +29,25 @@ function agregarPedidoForm() {
     <button type="button" class="eliminarPedido">❌</button>
     <hr>
   `;
-  div.querySelector(".eliminarPedido").addEventListener("click", () => div.remove());
+
+  // botón eliminar pedido
+  div.querySelector(".eliminarPedido").addEventListener("click", () => {
+    div.remove();
+  });
+
   pedidosContainer.appendChild(div);
 }
 
+// 👉 Evento para añadir pedidos dinámicamente
 btnAgregarPedido.addEventListener("click", agregarPedidoForm);
 
+// 👉 Enviar formulario
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const nombreCliente = document.getElementById("nombreCliente").value;
 
+  // 1. Insertar cliente
   const { data: cliente, error: errorCliente } = await supabase
     .from("cliente")
     .insert([{ nombre: nombreCliente }])
@@ -49,19 +59,28 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
+  // 2. Insertar pedidos asociados
   const pedidos = [];
   document.querySelectorAll(".pedido-form").forEach(div => {
+    const cantidad = parseInt(div.querySelector(".cantidad").value);
+    const tamaño = div.querySelector(".tamaño").value;
+    const relleno = div.querySelector(".relleno").value;
+    const estado = div.querySelector(".estado").value;
+
     pedidos.push({
       cliente_id: cliente.id,
-      cantidad: parseInt(div.querySelector(".cantidad").value),
-      tamaño: div.querySelector(".tamaño").value,
-      relleno: div.querySelector(".relleno").value,
-      estado: div.querySelector(".estado").value
+      cantidad,
+      tamaño,
+      relleno,
+      estado
     });
   });
 
   if (pedidos.length > 0) {
-    const { error: errorPedidos } = await supabase.from("contenido_pedido").insert(pedidos);
+    const { error: errorPedidos } = await supabase
+      .from("contenido_pedido")
+      .insert(pedidos);
+
     if (errorPedidos) {
       mensaje.textContent = "❌ Error creando pedidos: " + errorPedidos.message;
       return;
@@ -70,6 +89,8 @@ form.addEventListener("submit", async (e) => {
 
   mensaje.style.color = "green";
   mensaje.textContent = "✅ Cliente y pedidos creados correctamente";
+
+  // limpiar formulario
   form.reset();
   pedidosContainer.innerHTML = "";
 });
