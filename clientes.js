@@ -46,7 +46,7 @@ async function cargarDatos() {
               <td>${p.cantidad}</td>
               <td>${p.tamaño}</td>
               <td>${p.relleno}</td>
-              <td>${p.estado}</td>
+              <td class="estado ${p.estado.replace(/\s+/g, '-').toLowerCase()}">${p.estado}</td>
             </tr>
           `).join("")}
         </tbody>
