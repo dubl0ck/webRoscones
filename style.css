@@ -165,25 +165,18 @@ hr {
   color: white;
 }
 
-/* Ajustar contenido para que no se esconda debajo del menú */
-body {
-  padding-top: 60px; /* Altura de la barra */
-  margin-top: 50px; /* Espacio extra para evitar solapamiento */
-}
-
-.estado.pendiente {
-  color: red;
-  font-weight: bold;
-}
-
-.estado.en-preparación {
+select.estado.pendiente {
   color: orange;
   font-weight: bold;
 }
 
-.estado.entregado {
-  color: green;
+select.estado.en-preparación {
+  color: blue;
   font-weight: bold;
 }
 
+select.estado.entregado {
+  color: green;
+  font-weight: bold;
+}
 

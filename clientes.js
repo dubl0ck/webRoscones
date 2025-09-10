@@ -11,6 +11,7 @@ async function cargarDatos() {
 
   if (error) {
     console.error(error);
+    console.error("Error al cargar los datos de Supabase");
     return;
   }
 
@@ -28,9 +29,8 @@ async function cargarDatos() {
     `;
 
     // Tabla de pedidos
-    if (cliente.contenido_pedido.length > 0) {
+     if (cliente.contenido_pedido.length > 0) {
       const tabla = document.createElement("table");
-      tabla.border = "1";
       tabla.innerHTML = `
         <thead>
           <tr>
@@ -41,16 +41,49 @@ async function cargarDatos() {
           </tr>
         </thead>
         <tbody>
-          ${cliente.contenido_pedido.map(p => `
-            <tr>
-              <td>${p.cantidad}</td>
-              <td>${p.tamaño}</td>
-              <td>${p.relleno}</td>
-              <td class="estado ${p.estado.replace(/\s+/g, '-').toLowerCase()}">${p.estado}</td>
-            </tr>
-          `).join("")}
+          ${cliente.contenido_pedido.map(p => {
+            const estadoClass = p.estado.replace(/\s+/g, "-").toLowerCase();
+            return `
+              <tr data-pedido-id="${p.id}">
+                <td>${p.cantidad}</td>
+                <td>${p.tamaño}</td>
+                <td>${p.relleno}</td>
+                <td>
+                  <select class="estado ${estadoClass}">
+                    <option value="Pendiente" ${p.estado === "Pendiente" ? "selected" : ""}>Pendiente</option>
+                    <option value="En preparación" ${p.estado === "En preparación" ? "selected" : ""}>En preparación</option>
+                    <option value="Entregado" ${p.estado === "Entregado" ? "selected" : ""}>Entregado</option>
+                  </select>
+                </td>
+              </tr>
+            `;
+          }).join("")}
         </tbody>
       `;
+
+      // añadir listeners a los selects
+      tabla.querySelectorAll("select.estado").forEach(select => {
+        select.addEventListener("change", async (e) => {
+          const tr = e.target.closest("tr");
+          const pedidoId = tr.getAttribute("data-pedido-id");
+          const nuevoEstado = e.target.value;
+
+          // actualizar en supabase
+          const { error } = await supabase
+            .from("contenido_pedido")
+            .update({ estado: nuevoEstado })
+            .eq("id", pedidoId);
+
+          if (error) {
+            alert("❌ Error actualizando estado: " + error.message);
+            return;
+          }
+
+          // actualizar estilos
+          e.target.className = "estado " + nuevoEstado.replace(/\s+/g, "-").toLowerCase();
+        });
+      });
+
       divCliente.appendChild(tabla);
     } else {
       divCliente.innerHTML += `<p><em>Este cliente no tiene pedidos.</em></p>`;
