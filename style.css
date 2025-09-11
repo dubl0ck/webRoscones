@@ -180,3 +180,16 @@ select.estado.entregado {
   font-weight: bold;
 }
 
+button.eliminarPedido {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button.eliminarPedido:hover {
+  background: #d32f2f;
+}
+
