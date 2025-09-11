@@ -22,11 +22,14 @@ async function cargarDatos() {
     // Bloque por cliente
     const divCliente = document.createElement("div");
     divCliente.classList.add("cliente-bloque");
+    divCliente.setAttribute("data-cliente-id", cliente.id);
 
     divCliente.innerHTML = `
       <h3>${cliente.nombre}</h3>
       <p><strong>Fecha de creación:</strong> ${new Date(cliente.fecha_creacion).toLocaleDateString()}</p>
+      <button class="eliminarCliente">❌ Eliminar cliente</button>
     `;
+
 
     // Tabla de pedidos
      if (cliente.contenido_pedido.length > 0) {
@@ -132,9 +135,26 @@ async function cargarDatos() {
       });
 
       divCliente.appendChild(tabla);
-    } else {
-      divCliente.innerHTML += `<p><em>Este cliente no tiene pedidos.</em></p>`;
-    }
+      } else {
+        divCliente.innerHTML += `<p><em>Este cliente no tiene pedidos.</em></p>`;
+      }
+
+      // 🔹 Listener para eliminar cliente completo
+    divCliente.querySelector(".eliminarCliente").addEventListener("click", async () => {
+      if (!confirm(`¿Seguro que deseas eliminar al cliente "${cliente.nombre}" y todos sus pedidos?`)) return;
+
+      const { error } = await supabase
+        .from("cliente")
+        .delete()
+        .eq("id", cliente.id);
+
+      if (error) {
+        alert("❌ Error eliminando cliente: " + error.message);
+        return;
+      }
+
+      divCliente.remove();
+    });
 
     contenedor.appendChild(divCliente);
   });
