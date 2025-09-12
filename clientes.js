@@ -49,10 +49,10 @@ async function cargarDatos() {
             const estadoClass = p.estado.replace(/\s+/g, "-").toLowerCase();
             return `
               <tr data-pedido-id="${p.id}">
-                <td>${p.cantidad}</td>
-                <td>${p.tamaño}</td>
-                <td>${p.relleno}</td>
-                <td>
+                <td class="col-cantidad">${p.cantidad}</td>
+                <td class="col-tamaño">${p.tamaño}</td>
+                <td class="col-relleno">${p.relleno}</td>
+                <td class="col-estado">
                   <select class="estado ${estadoClass}">
                     <option value="Pendiente" ${p.estado === "Pendiente" ? "selected" : ""}>Pendiente</option>
                     <option value="En preparación" ${p.estado === "En preparación" ? "selected" : ""}>En preparación</option>
