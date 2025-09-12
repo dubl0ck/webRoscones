@@ -4,6 +4,17 @@ const supabaseUrl = "https://zxipywyhobtlxaaerazi.supabase.co";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp4aXB5d3lob2J0bHhhYWVyYXppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTczMzE5ODYsImV4cCI6MjA3MjkwNzk4Nn0.YB_mgNKRBrJ8-Z7jnT5_xeQV0zrmAiRqVZ8JqgLxjVs";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+// Verificar sesión activa
+async function verificarSesion() {
+  const { data, error } = await supabase.auth.getSession();
+
+  if (!data.session) {
+    alert("Debes iniciar sesión primero");
+    window.location.href = "index.html"; // redirige al login
+  }
+}
+await verificarSesion();
+
 const form = document.getElementById("cliente-form");
 const pedidosContainer = document.getElementById("pedidos-container");
 const btnAgregarPedido = document.getElementById("agregarPedido");
@@ -93,4 +104,11 @@ form.addEventListener("submit", async (e) => {
   // limpiar formulario
   form.reset();
   pedidosContainer.innerHTML = "";
+});
+
+// Logout
+document.getElementById("logout").addEventListener("click", async (e) => {
+  e.preventDefault();
+  await supabase.auth.signOut();
+  window.location.href = "index.html";
 });
