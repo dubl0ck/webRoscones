@@ -193,3 +193,49 @@ button.eliminarPedido:hover {
   background: #d32f2f;
 }
 
+button.eliminarCliente {
+  background: #e53935;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+button.eliminarCliente:hover {
+  background: #c62828;
+}
+
+button.editarPedido {
+  background: #1976d2;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+button.editarPedido:hover {
+  background: #1565c0;
+}
+
+button.guardarPedido {
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+button.cancelarEdicion {
+  background: #9e9e9e;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}

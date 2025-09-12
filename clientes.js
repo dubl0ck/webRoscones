@@ -60,6 +60,7 @@ async function cargarDatos() {
                   </select>
                 </td>
                 <td>
+                  <button class="editarPedido">✏️</button>
                   <button class="eliminarPedido">❌</button>
                 </td>
               </tr>
@@ -131,6 +132,69 @@ async function cargarDatos() {
           }
 
           tr.remove(); // borrar de la tabla sin recargar
+        });
+      });
+
+       // 🔹 Editar pedido
+      tabla.querySelectorAll("button.editarPedido").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          const tr = e.target.closest("tr");
+          const pedidoId = Number(tr.getAttribute("data-pedido-id"));
+
+          // Guardar valores actuales
+          const cantidad = tr.querySelector(".col-cantidad").textContent;
+          const tamaño = tr.querySelector(".col-tamaño").textContent;
+          const relleno = tr.querySelector(".col-relleno").textContent;
+          const estado = tr.querySelector(".col-estado select").value;
+
+          // Convertir fila en formulario editable
+          tr.innerHTML = `
+            <td><input type="number" class="edit-cantidad" value="${cantidad}"></td>
+            <td><input type="text" class="edit-tamaño" value="${tamaño}"></td>
+            <td><input type="text" class="edit-relleno" value="${relleno}"></td>
+            <td>
+              <select class="edit-estado">
+                <option value="Pendiente" ${estado === "Pendiente" ? "selected" : ""}>Pendiente</option>
+                <option value="En preparación" ${estado === "En preparación" ? "selected" : ""}>En preparación</option>
+                <option value="Entregado" ${estado === "Entregado" ? "selected" : ""}>Entregado</option>
+              </select>
+            </td>
+            <td>
+              <button class="guardarPedido">💾</button>
+              <button class="cancelarEdicion">❌</button>
+            </td>
+          `;
+
+          // Guardar cambios
+          tr.querySelector(".guardarPedido").addEventListener("click", async () => {
+            const nuevaCantidad = parseInt(tr.querySelector(".edit-cantidad").value);
+            const nuevoTamaño = tr.querySelector(".edit-tamaño").value;
+            const nuevoRelleno = tr.querySelector(".edit-relleno").value;
+            const nuevoEstado = tr.querySelector(".edit-estado").value;
+
+            const { error } = await supabase
+              .from("contenido_pedido")
+              .update({
+                cantidad: nuevaCantidad,
+                tamaño: nuevoTamaño,
+                relleno: nuevoRelleno,
+                estado: nuevoEstado
+              })
+              .eq("id", pedidoId);
+
+            if (error) {
+              alert("❌ Error actualizando pedido: " + error.message);
+              return;
+            }
+
+            // Recargar datos del cliente sin refrescar toda la página
+            cargarDatos();
+          });
+
+          // Cancelar edición → recargar datos originales
+          tr.querySelector(".cancelarEdicion").addEventListener("click", () => {
+            cargarDatos();
+          });
         });
       });
 
